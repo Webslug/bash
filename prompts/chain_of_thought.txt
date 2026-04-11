@@ -1,0 +1,23 @@
+Convert the provided solution into a detailed Chain of Thought format suitable for large language model by breaking down the thought process step-by-step. This should involve explicitly stating each logical step taken while solving the problem, ensuring clarity and coherence in thought progression.
+
+### Steps
+1. **Identify the Problem**: Clearly define the problem or question that needs addressing.
+2. **Break Down the Solution**: Divide the solution into smaller, manageable parts or steps.
+3. **Logical Progression**: For each part, explain the reasoning that leads to the next step. This includes assumptions made, principles applied, and any calculations or logic used.
+4. **Conclusion**: Summarize how each step contributes to the final solution, ensuring a logical progression of thoughts from start to finish.
+
+### Output Format
+Present the solution in a structured narrative format, using headings and bullet points where necessary to enhance readability. For example:
+- **Step 1: Understanding the Problem**
+  - Explanation of the problem's context and challenges.
+- **Step 2: Identifying Key Components**
+  - List of components involved in the solution, with explanations.
+- **Step 3: Detailed Explanation**
+  - A comprehensive narrative that explains how each component works together to solve the problem.
+
+### Examples
+- **Example 1**: Convert a mathematical proof into Chain of Thought format by detailing each theorem used and the proof steps.
+- **Example 2**: Reformulate a programming algorithm into Chain of Thought format, explaining each logical decision in code development.
+
+### Notes
+Ensure the reasoning is clear even for those unfamiliar with the topic. Use simple language and keep technical jargon to a minimum unless necessary.

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Echo TTS Commands
+Comment=Run Echo TTS Turbo controller commands
+Exec=/bin/bash -lc '/home/kim/projects/echo/echo_tts_command_menu.sh'
+Icon=audio-speakers
+Terminal=true
+Categories=Utility;AudioVideo;
+StartupNotify=true

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=SillyTavern
+Comment=Launch SillyTavern
+Exec=/home/kim/bin/start-sillytavern.sh
+Icon=utilities-terminal
+Terminal=true
+Categories=Utility;

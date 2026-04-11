@@ -1,0 +1,118 @@
+This is a comprehensive guide and "Cheat Sheet" for your Lubuntu Openbox configuration. You can copy the text below and save it as a file named `README_Keybinds.txt` in your home folder for future reference.
+
+### Lubuntu/Openbox Keyboard Shortcut Guide
+
+#### 1. How to Edit Your Configuration
+To add or change keyboard shortcuts, you must edit the `rc.xml` file. Use the following command in your terminal:
+
+```bash
+featherpad /home/kim/.config/openbox/rc.xml
+```
+*Note: Ensure you are editing the file in your **home** folder (`.config/openbox/rc.xml`) and not the system-wide version.*
+
+#### 2. How to Apply Changes (Refresh)
+After saving your changes in FeatherPad, the new keys will not work until you tell Openbox to reload the file. Run this command:
+
+```bash
+openbox --reconfigure
+```
+
+---
+
+#### 3. Keyboard Shortcut Cheat Sheet
+The following shortcuts are active in your current `rc.xml`:
+
+| Action | Shortcut | Key Code in XML |
+| :--- | :--- | :--- |
+| **Snap Left (50% Width)** | `Super` + `Left Arrow` | `W-Left` |
+| **Snap Right (50% Width)** | `Super` + `Right Arrow` | `W-Right` |
+| **Snap Top Half** | `Super` + `Shift` + `Up` | `W-S-Up` |
+| **Snap Bottom Half** | `Super` + `Shift` + `Down` | `W-S-Down` |
+| **Always on Top (Toggle)** | `Super` + `T` | `W-T` |
+| **Corner Snap: Top-Left** | `Super` + `Numpad 7` | `W-KP_7` |
+| **Corner Snap: Top-Right** | `Super` + `Numpad 9` | `W-KP_9` |
+| **Corner Snap: Bottom-Left** | `Super` + `Numpad 1` | `W-KP_1` |
+| **Corner Snap: Bottom-Right**| `Super` + `Numpad 3` | `W-KP_3` |
+| **Maximize (Toggle)** | `Super` + `Up Arrow` | `W-Up` |
+| **Minimize (Iconify)** | `Super` + `Down Arrow` | `W-Down` |
+| **Close Window** | `Super` + `Q` | `W-Q` |
+| **Center Window** | `Super` + `C` | `W-C` |
+| **Toggle Fullscreen** | `Super` + `F` | `W-F` |
+| **Toggle Window Borders** | `Super` + `D` | `W-D` |
+| **Move 40px (Nudge)** | `Ctrl` + `Alt` + `Arrows` | `C-A-[Arrow]` |
+| **Resize 40px** | `Super` + `Alt` + `Arrows` | `W-A-[Arrow]` |
+
+---
+
+#### 4. Important Troubleshooting Tips
+
+**The "Super Key" Conflict:**
+If the `Super` (Windows) key does not trigger these shortcuts, it is likely being "stolen" by the LXQt menu.
+1. Right-click the **Application Menu** (Start button) on your panel.
+2. Select **Configure "Application Menu"**.
+3. Look for the **Shortcut** field. If it says `Super_L`, click the **"X"** to clear it.
+4. Additionally, check **LXQt Configuration Center** -> **Shortcut Keys** and ensure no global shortcuts are assigned to `Super_L`.
+
+**Numpad Requirements:**
+For the Corner Snapping shortcuts (Numpad 1, 3, 7, 9) to function, **NumLock must be ON**.
+
+**XML Syntax Reminder:**
+When adding new events, they must be placed inside the `<keyboard>` section. Every `<keybind>` must have a matching `</keybind>` tag.
+
+* **W** = Super / Windows Key
+* **C** = Control
+* **A** = Alt
+* **S** = Shift
+
+---
+
+<keybind key="W-Left">
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><width>50%</width><height>100%</height></action>
+    </keybind>
+    <keybind key="W-Right">
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>-0</x><y>0</y><width>50%</width><height>100%</height></action>
+    </keybind>
+    <keybind key="W-S-Up">
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><width>100%</width><height>50%</height></action>
+    </keybind>
+    <keybind key="W-S-Down">
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>0</x><y>-0</y><width>100%</width><height>50%</height></action>
+    </keybind>
+
+    <keybind key="W-KP_7">
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><width>50%</width><height>50%</height></action>
+    </keybind>
+    <keybind key="W-KP_9">
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>-0</x><y>0</y><width>50%</width><height>50%</height></action>
+    </keybind>
+    <keybind key="W-KP_1">
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>0</x><y>-0</y><width>50%</width><height>50%</height></action>
+    </keybind>
+    <keybind key="W-KP_3">
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>-0</x><y>-0</y><width>50%</width><height>50%</height></action>
+    </keybind>
+
+    <keybind key="W-T"><action name="ToggleAlwaysOnTop"/></keybind>
+    <keybind key="W-Up"><action name="ToggleMaximizeFull"/></keybind>
+    <keybind key="W-Down"><action name="Iconify"/></keybind>
+    <keybind key="W-C"><action name="MoveToCenter"/></keybind>
+    <keybind key="W-F"><action name="ToggleFullscreen"/></keybind>
+    <keybind key="W-Q"><action name="Close"/></keybind>
+    <keybind key="W-D"><action name="ToggleDecorations"/></keybind>
+
+    <keybind key="W-A-Right"><action name="ResizeRelative"><right>40</right></action></keybind>
+    <keybind key="W-A-Left"><action name="ResizeRelative"><right>-40</right></action></keybind>
+    <keybind key="W-A-Up"><action name="ResizeRelative"><bottom>40</bottom></action></keybind>
+    <keybind key="W-A-Down"><action name="ResizeRelative"><bottom>-40</bottom></action></keybind>
+    <keybind key="C-A-Left"><action name="MoveRelative"><x>-40</x><y>0</y></action></keybind>
+    <keybind key="C-A-Right"><action name="MoveRelative"><x>40</x><y>0</y></action></keybind>
+    <keybind key="C-A-Up"><action name="MoveRelative"><x>0</x><y>-40</y></action></keybind>
+    <keybind key="C-A-Down"><action name="MoveRelative"><x>0</x><y>40</y></action></keybind>
