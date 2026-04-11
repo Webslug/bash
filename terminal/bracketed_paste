@@ -1,0 +1,42 @@
+# Disable bracketed paste mode permanently
+set enable-bracketed-paste off
+
+
+featherpad ~/.inputrc
+
+
+In Lubuntu (and most Linux systems), the location of the file depends on whether you want the change to apply **just to you** or to **every user** on the computer.
+
+### 1. For Your User Only (Recommended)
+The file needs to be placed in your **home directory**.
+* **Path:** `/home/yourusername/.inputrc`
+* **Shorthand:** `~/.inputrc`
+
+The `.` at the beginning of the filename makes it a **hidden file**. If you are looking for it in the PCManFM-Qt file manager, you’ll need to press **Ctrl + H** to see it.
+
+**How to create/edit it quickly:**
+Run this in your terminal:
+```bash
+nano ~/.inputrc
+```
+Then paste `set enable-bracketed-paste off` into it, press **Ctrl + O** to save, and **Ctrl + X** to exit.
+
+---
+
+### 2. For All Users (System-wide)
+If you want this to be the default for every user account on the Lubuntu system, the file already exists in the system configuration folder.
+* **Path:** `/etc/inputrc`
+
+**How to edit it:**
+Since this is a system file, you must use `sudo`:
+```bash
+sudo nano /etc/inputrc
+```
+Scroll to the bottom and add the line there.
+
+---
+
+### Important: Which one wins?
+If you have settings in **both** files, the one in your home directory (`~/.inputrc`) will **override** the system-wide one (`/etc/inputrc`). 
+
+**One final check:** If you are using **Zsh** instead of the default **Bash**, these files will likely be ignored. Would you like me to give you a quick command to confirm which shell you’re actually running?

@@ -1,0 +1,8 @@
+sudo usermod -aG storage teacher
+
+The -aG part is the important silk ribbon here:
+
+-G storage sets supplementary groups
+-a means append, so existing groups are kept
+
+Then verify:

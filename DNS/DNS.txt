@@ -1,0 +1,5 @@
+resolvectl status
+resolvectl dns
+resolvectl query pornhub.com
+nslookup pornhub.com
+nslookup pornhub.com 1.1.1.3

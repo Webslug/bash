@@ -1,0 +1,136 @@
+This is a storage/OS config question, not Nursery Guardian project territory — let me give you a clean tactical guide.
+
+Your fstab entries are currently **locked to kim (uid=1000, gid=1000)** — that's why Teacher can't access them. You need to swap from uid/gid ownership to **group-based permissions** using your `storage` group's GID.
+
+---
+
+## Battle Plan: Group-Owned NTFS Mounts via fstab
+
+### Step 0 — Get your storage group GID
+
+Open a terminal as kim and run:
+```bash
+getent group storage
+```
+Note the GID — it'll look like `storage:x:1001:kim,teacher` — you want that number (e.g. `1001`).
+
+---
+
+### Step 1 — Unmount the three drives cleanly
+
+```bash
+sudo umount /media/kim/TV
+sudo umount /media/kim/F
+sudo umount /media/kim/G
+```
+
+If any complain "target is busy", close your file manager first, then retry.
+
+---
+
+### Step 2 — Create better mount points
+
+Your current paths live under `/media/kim/` which is semantically wrong for shared drives. Create neutral shared mount points:
+
+```bash
+sudo mkdir -p /media/storage/tv
+sudo mkdir -p /media/storage/f
+sudo mkdir -p /media/storage/g
+```
+
+---
+
+### Step 3 — Edit fstab in Featherpad
+
+```bash
+sudo featherpad /etc/fstab
+```
+
+**Replace your three NTFS lines with these** (substitute `1001` with your actual storage GID):
+
+```
+UUID=32DC18A8DC1867FD  /media/storage/tv  ntfs-3g  uid=0,gid=1001,dmask=002,fmask=113,windows_names,auto  0  0
+UUID=4E6857BA6857A00F  /media/storage/f   ntfs-3g  uid=0,gid=1001,dmask=002,fmask=113,windows_names,auto  0  0
+UUID=322A07462A070697  /media/storage/g   ntfs-3g  uid=0,gid=1001,dmask=002,fmask=113,windows_names,auto  0  0
+```
+
+**What changed and why:**
+- `uid=0` → root owns the files (neutral, no personal account owns them)
+- `gid=1001` → your `storage` group owns them
+- `dmask=002` → directories: owner=rwx, group=rwx, others=r-x (group gets write)
+- `fmask=113` → files: owner=rw-, group=rw-, others=r-- (group gets read/write)
+- `auto` → mounts at boot without user intervention
+
+Save and close Featherpad.
+
+---
+
+### Step 4 — Mount all fstab entries
+
+```bash
+sudo mount -a
+```
+
+Verify all three mounted cleanly:
+```bash
+mount | grep ntfs
+```
+
+---
+
+### Step 5 — Confirm Teacher can access them
+
+```bash
+su - teacher
+ls /media/storage/tv
+touch /media/storage/tv/testfile && echo "Write OK" && rm /media/storage/tv/testfile
+```
+
+---
+
+### Step 6 — Refresh the LXQt file manager (PCManFM-Qt)
+
+The file manager reads `udisks2` and `/proc/mounts`. Nudge it:
+
+```bash
+# Kill and relaunch the file manager
+pkill pcmanfm-qt ; sleep 1 ; pcmanfm-qt &
+```
+
+Or simply close and reopen it. The new mounts under `/media/storage/` should appear under **Devices** in the sidebar.
+
+---
+
+## Part 2 — Relabelling the Drives
+
+NTFS volume labels live inside the filesystem itself. You change them like this, **one at a time**, unmounting first:
+
+```bash
+# Unmount the target drive
+sudo umount /media/storage/tv
+
+# Set the new label
+sudo ntfslabel /dev/disk/by-uuid/32DC18A8DC1867FD "NurseryTV"
+
+# Remount it
+sudo mount /media/storage/tv
+
+# Verify
+sudo ntfslabel /dev/disk/by-uuid/32DC18A8DC1867FD
+```
+
+Repeat the same pattern for F and G, substituting their UUIDs and your chosen labels.
+
+> **Note:** The label change is cosmetic at the OS level — your fstab uses UUIDs, so labels don't affect mounting. They do affect how the drive announces itself to tools like `lsblk` and file managers.
+
+---
+
+## Quick Checklist Before You Touch fstab
+
+- [ ] Confirm `getent group storage` shows both `kim` and `teacher`
+- [ ] Confirm Teacher's groups with `groups teacher` — `storage` must appear
+- [ ] Note your storage GID before editing
+- [ ] Unmount all three before saving fstab changes
+- [ ] Run `sudo mount -a` and check for errors before logging in as Teacher
+
+If `mount -a` throws an error, **do not reboot** — fix the fstab first or you risk a broken boot cycle.

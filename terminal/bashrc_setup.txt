@@ -1,0 +1,29 @@
+kim@device:~$ featherpad ~/.bashrc
+kim@device:~$ source ~/.bashrc && bind -f ~/.inputrc
+
+
+
+Open your ~/.bashrc (nano ~/.bashrc), go to the very bottom, and paste this:
+Bash
+
+----
+
+# Function to delete everything from the last quote to the end
+snip_quotes() {
+    # Keep everything up to the last " character
+    READLINE_LINE="${READLINE_LINE%\"*}"
+    # Move the cursor to the new end of the line
+    READLINE_POINT=${#READLINE_LINE}
+}
+
+# Bind that function to Ctrl+G
+bind -x '"\C-g": snip_quotes'
+
+
+-----
+
+
+The terminal won't know you changed these until you tell it to look at the files again. Run this one command:
+Bash
+
+source ~/.bashrc && bind -f ~/.inputrc

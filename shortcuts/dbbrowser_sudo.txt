@@ -1,0 +1,11 @@
+cat <<EOF > ~/Desktop/sqlitebrowser-sudo.desktop
+[Desktop Entry]
+Name=DB Browser (Sudo)
+Exec=lxqt-sudo sqlitebrowser
+Icon=sqlitebrowser
+Type=Application
+Terminal=false
+Categories=Development;Database;
+EOF
+
+chmod +x ~/Desktop/sqlitebrowser-sudo.desktop

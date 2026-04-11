@@ -1,0 +1,39 @@
+pactl list sinks short
+pactl list cards | grep -A 20 "Active Profile\|port\|availability"
+pactl list cards
+
+
+Switch to optical
+pactl set-card-profile alsa_card.pci-0000_00_1f.3 output:iec958-stereo+input:analog-stereo
+
+Switch to Speakers
+pactl set-sink-port alsa_output.pci-0000_00_1f.3.analog-stereo analog-output-lineout
+
+
+s
+
+DESKTOP_DIR="/home/kim/Desktop"; cat > "$DESKTOP_DIR/Switch to Headphones.desktop" <<'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Switch to Headphones
+Comment=Switch audio to optical headphones
+Exec=pactl set-card-profile alsa_card.pci-0000_00_1f.3 output:iec958-stereo+input:analog-stereo
+Icon=audio-headphones
+Terminal=false
+Categories=AudioVideo;
+EOF
+chmod +x "$DESKTOP_DIR/Switch to Headphones.desktop"
+
+DESKTOP_DIR="/home/kim/Desktop"; cat > "$DESKTOP_DIR/Switch to Speakers.desktop" <<'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Switch to Speakers
+Comment=Switch audio back to speakers
+Exec=pactl set-card-profile alsa_card.pci-0000_00_1f.3 output:analog-stereo+input:analog-stereo
+Icon=audio-speakers
+Terminal=false
+Categories=AudioVideo;
+EOF
+chmod +x "$DESKTOP_DIR/Switch to Speakers.desktop"

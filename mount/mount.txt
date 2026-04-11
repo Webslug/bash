@@ -1,0 +1,12 @@
+findmnt | grep -E '32DC18A8DC1867FD|4E6857BA6857A00F|322A07462A070697|/media/kim|/mnt/storage'
+
+sudo mount -a
+
+
+Then confirm they landed in the right place:
+
+findmnt | grep '/mnt/storage'
+
+Then check permissions:
+
+ls -ld /mnt/storage /mnt/storage/TV /mnt/storage/F /mnt/storage/G

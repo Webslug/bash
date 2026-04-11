@@ -1,0 +1,39 @@
+No, **`--quantkv 1`** is technically not TurboQuant, though it achieves a similar goal. Because you are using the latest **v1.111.2**, it is important to clear up the naming:
+
+### 1. The Misconception: `--quantkv 1` vs. TurboQuant
+* **`--quantkv 1`** is **Q8_0 KV quantization**. It compresses your KV Cache (the "memory" of your conversation) from 16-bit to 8-bit. This saves exactly **50% of VRAM** for your context window, allowing you to double your tokens (e.g., from 8k to 16k) on your 3060.
+* **TurboQuant** is a specific, new "activation rotation" optimization included in v1.111.2. As your release notes state: ***"This release contains the TurboQuant inspired activation rotations... there is no option to turn this on, it's automatically used."***.
+* **The Difference:** TurboQuant optimizes the *math* and *speed* of the model's internal rotations to prevent quality loss when using very low bit-widths. `--quantkv` is the *setting* you use to actually shrink the memory footprint.
+
+### 2. How to leverage v1.111.2 for more speed
+With a GTX 3060 and 64GB of RAM, you can use several new features in this specific release to boost performance:
+
+* **`--quantkv 3` (New BF16 Support):** This release added support for **BF16 KV type**. While `--quantkv 1` (8-bit) is smaller, `--quantkv 3` (BF16) is often faster on NVIDIA 30-series cards and maintains higher intelligence for complex models like Gemma 4.
+* **`--useswa` (Essential for Gemma 4):** The release notes mention that Gemma 4 uses significantly less VRAM when **Sliding Window Attention** is enabled. On your 3060, this is the difference between crashing and running a large model smoothly.
+* **`--flashinference`:** This remains the single biggest speed boost for token-per-second (t/s) output on RTX cards.
+
+### 3. Recommended Script Update
+Since you're on the latest version and using Gemma 4, update your `kobold.sh` launch command to this:
+
+```bash
+# Optimized for KoboldCpp v1.111.2 + Gemma 4
+"$KOBOLD_BIN" \
+  --model "$MODEL_DIR/$MODEL" \
+  --contextsize "$CONTEXTSIZE" \
+  --gpulayers "$GPULAYERS" \
+  --usecuda \
+  --flashinference \
+  --quantkv 3 \
+  --useswa \
+  --jinja
+```
+
+### 4. Summary of Speeds & Benefits
+| Feature | Command | Benefit for your 3060 |
+| :--- | :--- | :--- |
+| **8-bit Cache** | `--quantkv 1` | Fits **2x more context** (tokens) into VRAM. |
+| **BF16 Cache** | `--quantkv 3` | **Faster processing** than 8-bit with better logic. |
+| **SWA** | `--useswa` | Prevents VRAM "bloat" as conversation gets long. |
+| **TurboQuant** | *Automatic* | **Better accuracy** at long context lengths; no flag needed. |
+
+**Final Note on Gemma 4:** As the notes say, it is "very format sensitive." Always use the **`--jinja`** flag when running Gemma 4 to ensure it doesn't start outputting repetitive gibberish.

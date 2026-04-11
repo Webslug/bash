@@ -1,0 +1,386 @@
+OPENBOX / LUBUNTU WINDOW SHORTCUT EXAMPLES
+==========================================
+
+Notes
+-----
+- Lubuntu usually uses Openbox underneath LXQt.
+- Openbox keybindings live in:
+  ~/.config/openbox/rc.xml
+- After editing rc.xml, reload Openbox with:
+  openbox --reconfigure
+- If Windows/Super key shortcuts do not work, LXQt may already be using them.
+
+BACK UP FIRST
+-------------
+cp ~/.config/openbox/rc.xml ~/.config/openbox/rc.xml.bak
+
+RESTORE BACKUP
+--------------
+cp ~/.config/openbox/rc.xml.bak ~/.config/openbox/rc.xml
+openbox --reconfigure
+
+EDIT THE FILE
+-------------
+featherpad ~/.config/openbox/rc.xml
+
+OR WITH SUDO IF YOU REALLY NEED IT
+----------------------------------
+sudo featherpad ~/.config/openbox/rc.xml
+
+WHERE TO PUT KEYBINDS
+---------------------
+Inside the <keyboard> ... </keyboard> section.
+
+Example skeleton:
+
+<keyboard>
+  ...
+  <keybind key="W-Left">
+    ...
+  </keybind>
+</keyboard>
+
+KEY NAME NOTES
+--------------
+W-Left     = Windows/Super + Left Arrow
+W-Right    = Windows/Super + Right Arrow
+W-Up       = Windows/Super + Up Arrow
+W-Down     = Windows/Super + Down Arrow
+A-Tab      = Alt + Tab
+C-A-Left   = Ctrl + Alt + Left Arrow
+S-W-Left   = Shift + Windows/Super + Left Arrow
+
+W = Super/Windows key
+A = Alt
+C = Control
+S = Shift
+
+IMPORTANT SUPER KEY CONFLICT NOTE
+---------------------------------
+If W-Left / W-Right do nothing, LXQt may be grabbing the Super key first.
+Check LXQt shortcut settings and remove conflicting bindings.
+
+HALF SCREEN SNAP LEFT
+---------------------
+<keybind key="W-Left">
+  <action name="UnmaximizeFull"/>
+  <action name="MoveResizeTo">
+    <x>0</x>
+    <y>0</y>
+    <width>50%</width>
+    <height>100%</height>
+  </action>
+</keybind>
+
+HALF SCREEN SNAP RIGHT
+----------------------
+<keybind key="W-Right">
+  <action name="UnmaximizeFull"/>
+  <action name="MoveResizeTo">
+    <x>-0</x>
+    <y>0</y>
+    <width>50%</width>
+    <height>100%</height>
+  </action>
+</keybind>
+
+TOP HALF
+--------
+<keybind key="W-S-Up">
+  <action name="UnmaximizeFull"/>
+  <action name="MoveResizeTo">
+    <x>0</x>
+    <y>0</y>
+    <width>100%</width>
+    <height>50%</height>
+  </action>
+</keybind>
+
+BOTTOM HALF
+-----------
+<keybind key="W-S-Down">
+  <action name="UnmaximizeFull"/>
+  <action name="MoveResizeTo">
+    <x>0</x>
+    <y>-0</y>
+    <width>100%</width>
+    <height>50%</height>
+  </action>
+</keybind>
+
+TOP LEFT CORNER
+---------------
+<keybind key="W-KP_7">
+  <action name="UnmaximizeFull"/>
+  <action name="MoveResizeTo">
+    <x>0</x>
+    <y>0</y>
+    <width>50%</width>
+    <height>50%</height>
+  </action>
+</keybind>
+
+TOP RIGHT CORNER
+----------------
+<keybind key="W-KP_9">
+  <action name="UnmaximizeFull"/>
+  <action name="MoveResizeTo">
+    <x>-0</x>
+    <y>0</y>
+    <width>50%</width>
+    <height>50%</height>
+  </action>
+</keybind>
+
+BOTTOM LEFT CORNER
+------------------
+<keybind key="W-KP_1">
+  <action name="UnmaximizeFull"/>
+  <action name="MoveResizeTo">
+    <x>0</x>
+    <y>-0</y>
+    <width>50%</width>
+    <height>50%</height>
+  </action>
+</keybind>
+
+BOTTOM RIGHT CORNER
+-------------------
+<keybind key="W-KP_3">
+  <action name="UnmaximizeFull"/>
+  <action name="MoveResizeTo">
+    <x>-0</x>
+    <y>-0</y>
+    <width>50%</width>
+    <height>50%</height>
+  </action>
+</keybind>
+
+MAXIMIZE WITH WINDOWS + UP
+--------------------------
+<keybind key="W-Up">
+  <action name="ToggleMaximizeFull"/>
+</keybind>
+
+MINIMIZE WITH WINDOWS + DOWN
+----------------------------
+<keybind key="W-Down">
+  <action name="Iconify"/>
+</keybind>
+
+ALTERNATIVE: WINDOWS + UP = ALWAYS ON TOP
+-----------------------------------------
+<keybind key="W-Up">
+  <action name="ToggleAlwaysOnTop"/>
+</keybind>
+
+ALTERNATIVE: WINDOWS + DOWN = ALWAYS ON BOTTOM
+----------------------------------------------
+<keybind key="W-Down">
+  <action name="ToggleAlwaysOnBottom"/>
+</keybind>
+
+CENTER WINDOW
+-------------
+<keybind key="W-C">
+  <action name="MoveToCenter"/>
+</keybind>
+
+FULLSCREEN TOGGLE
+-----------------
+<keybind key="W-F">
+  <action name="ToggleFullscreen"/>
+</keybind>
+
+SHADE / ROLL UP WINDOW
+----------------------
+<keybind key="W-R">
+  <action name="ToggleShade"/>
+</keybind>
+
+CLOSE WINDOW
+------------
+<keybind key="W-Q">
+  <action name="Close"/>
+</keybind>
+
+TOGGLE DECORATIONS
+------------------
+<keybind key="W-D">
+  <action name="ToggleDecorations"/>
+</keybind>
+
+SEND WINDOW TO FRONT
+--------------------
+<keybind key="W-Prior">
+  <action name="Raise"/>
+</keybind>
+
+SEND WINDOW TO BACK
+-------------------
+<keybind key="W-Next">
+  <action name="Lower"/>
+</keybind>
+
+MAKE WINDOW STICKY ON ALL DESKTOPS
+----------------------------------
+<keybind key="W-V">
+  <action name="ToggleOmnipresent"/>
+</keybind>
+
+MOVE WINDOW ONE DESKTOP LEFT
+----------------------------
+<keybind key="W-bracketleft">
+  <action name="SendToDesktopLeft"/>
+</keybind>
+
+MOVE WINDOW ONE DESKTOP RIGHT
+-----------------------------
+<keybind key="W-bracketright">
+  <action name="SendToDesktopRight"/>
+</keybind>
+
+GROW WINDOW HORIZONTALLY
+------------------------
+<keybind key="W-A-Right">
+  <action name="ResizeRelative">
+    <right>40</right>
+  </action>
+</keybind>
+
+SHRINK WINDOW HORIZONTALLY
+--------------------------
+<keybind key="W-A-Left">
+  <action name="ResizeRelative">
+    <right>-40</right>
+  </action>
+</keybind>
+
+GROW WINDOW VERTICALLY
+----------------------
+<keybind key="W-A-Up">
+  <action name="ResizeRelative">
+    <bottom>40</bottom>
+  </action>
+</keybind>
+
+SHRINK WINDOW VERTICALLY
+------------------------
+<keybind key="W-A-Down">
+  <action name="ResizeRelative">
+    <bottom>-40</bottom>
+  </action>
+</keybind>
+
+MOVE WINDOW A LITTLE LEFT
+-------------------------
+<keybind key="C-A-Left">
+  <action name="MoveRelative">
+    <x>-40</x>
+    <y>0</y>
+  </action>
+</keybind>
+
+MOVE WINDOW A LITTLE RIGHT
+--------------------------
+<keybind key="C-A-Right">
+  <action name="MoveRelative">
+    <x>40</x>
+    <y>0</y>
+  </action>
+</keybind>
+
+MOVE WINDOW A LITTLE UP
+-----------------------
+<keybind key="C-A-Up">
+  <action name="MoveRelative">
+    <x>0</x>
+    <y>-40</y>
+  </action>
+</keybind>
+
+MOVE WINDOW A LITTLE DOWN
+-------------------------
+<keybind key="C-A-Down">
+  <action name="MoveRelative">
+    <x>0</x>
+    <y>40</y>
+  </action>
+</keybind>
+
+EXAMPLE BLOCK TO PASTE INTO rc.xml
+----------------------------------
+Paste this inside the existing <keyboard> section:
+
+  <keybind key="W-Left">
+    <action name="UnmaximizeFull"/>
+    <action name="MoveResizeTo">
+      <x>0</x>
+      <y>0</y>
+      <width>50%</width>
+      <height>100%</height>
+    </action>
+  </keybind>
+
+  <keybind key="W-Right">
+    <action name="UnmaximizeFull"/>
+    <action name="MoveResizeTo">
+      <x>-0</x>
+      <y>0</y>
+      <width>50%</width>
+      <height>100%</height>
+    </action>
+  </keybind>
+
+  <keybind key="W-Up">
+    <action name="ToggleMaximizeFull"/>
+  </keybind>
+
+  <keybind key="W-Down">
+    <action name="Iconify"/>
+  </keybind>
+
+  <keybind key="W-C">
+    <action name="MoveToCenter"/>
+  </keybind>
+
+  <keybind key="W-F">
+    <action name="ToggleFullscreen"/>
+  </keybind>
+
+RELOAD OPENBOX
+--------------
+openbox --reconfigure
+
+IF OPENBOX RELOAD DOES NOT SEEM TO APPLY
+----------------------------------------
+openbox --restart
+
+CHECK FOR XML MISTAKES
+----------------------
+xmllint --noout ~/.config/openbox/rc.xml
+
+IF xmllint IS MISSING
+---------------------
+sudo apt update
+sudo apt install libxml2-utils
+
+USEFUL LXQT THOUGHT
+------------------
+Even if Openbox supports the binding, LXQt may intercept it first.
+So if a shortcut fails:
+1. Check LXQt global shortcuts
+2. Remove or change the conflicting Super binding
+3. Re-run:
+   openbox --reconfigure
+
+SUGGESTED SIMPLE SETUP
+----------------------
+W-Left   = snap left
+W-Right  = snap right
+W-Up     = maximize
+W-Down   = minimize
+
+If you want "pin to front/back" instead:
+W-Up     = ToggleAlwaysOnTop
+W-Down   = ToggleAlwaysOnBottom

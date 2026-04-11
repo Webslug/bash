@@ -1,0 +1,59 @@
+Node.js useful commands
+
+Version checks
+node -v
+npm -v
+corepack --version
+which node
+which npm
+/usr/bin/node -v
+/usr/bin/npm -v
+/usr/bin/corepack --version
+
+APT update and install
+sudo apt update
+sudo apt install -y curl ca-certificates gnupg
+curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
+sudo apt install -y nodejs
+
+Repair broken Node installation
+sudo apt remove -y libnode-dev libnode72 nodejs npm
+sudo apt --fix-broken install
+sudo apt autoremove -y
+sudo apt clean
+
+sudo apt update
+sudo apt install -y nodejs
+
+Enable corepack
+corepack --version
+sudo /usr/bin/corepack enable
+
+Check system Node directly
+/usr/bin/node -v
+/usr/bin/npm -v
+/usr/bin/corepack --version
+
+Check what your shell is using
+which node
+which npm
+echo $PATH
+
+APT maintenance
+sudo apt update
+sudo apt upgrade
+sudo apt autoremove -y
+sudo apt clean
+
+Remove Node installed by apt
+sudo apt remove -y nodejs
+sudo apt autoremove -y
+
+Purge Node installed by apt
+sudo apt purge -y nodejs
+sudo apt autoremove -y
+sudo apt clean
+
+Useful package checks
+apt list --installed | grep -E '^nodejs|^libnode'
+dpkg -l | grep -E 'nodejs|libnode'

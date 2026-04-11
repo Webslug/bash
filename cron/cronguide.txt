@@ -1,0 +1,425 @@
+cronguide.txt
+
+Cron guide for Lubuntu / LXQt
+
+Cron is used to run commands or scripts automatically on a schedule.
+
+Useful services and commands
+
+sudo systemctl status cron
+Check whether the cron service is running.
+
+sudo systemctl start cron
+Start cron now.
+
+sudo systemctl enable cron
+Enable cron at boot.
+
+sudo systemctl restart cron
+Restart cron after changes if needed.
+
+crontab -l
+List your current user cron jobs.
+
+crontab -e
+Edit your current user cron jobs.
+
+crontab -r
+Remove all of your current user cron jobs.
+
+crontab -i -r
+Remove all of your current user cron jobs with a confirmation prompt.
+
+sudo crontab -l
+List root cron jobs.
+
+sudo crontab -e
+Edit root cron jobs.
+
+sudo crontab -r
+Remove all root cron jobs.
+
+cat /etc/crontab
+View the system-wide crontab.
+
+ls -l /etc/cron.d
+List extra cron job files.
+
+ls -l /etc/cron.daily
+List daily scheduled scripts.
+
+ls -l /etc/cron.hourly
+List hourly scheduled scripts.
+
+ls -l /etc/cron.weekly
+List weekly scheduled scripts.
+
+ls -l /etc/cron.monthly
+List monthly scheduled scripts.
+
+Cron time format
+
+A normal cron line looks like this:
+
+* * * * * command_to_run
+- - - - -
+| | | | |
+| | | | day of week 0-7, both 0 and 7 mean Sunday
+| | | month 1-12
+| | day of month 1-31
+| hour 0-23
+minute 0-59
+
+Examples
+
+* * * * * command
+Run every minute.
+
+*/5 * * * * command
+Run every 5 minutes.
+
+0 * * * * command
+Run at the start of every hour.
+
+30 2 * * * command
+Run every day at 02:30.
+
+0 9 * * 1 command
+Run every Monday at 09:00.
+
+0 18 * * 1-5 command
+Run Monday to Friday at 18:00.
+
+0 0 1 * * command
+Run on the first day of every month at midnight.
+
+Special strings
+
+@reboot command
+Run once at boot.
+
+@hourly command
+Run once per hour.
+
+@daily command
+Run once per day.
+
+@weekly command
+Run once per week.
+
+@monthly command
+Run once per month.
+
+Editing cron jobs
+
+crontab -e
+This opens your personal crontab in an editor.
+
+On first use it may ask which editor to use.
+Nano is simplest.
+
+List jobs in order
+
+crontab -l
+This prints the current cron jobs in the order they appear in your crontab file.
+
+If you want line numbers:
+
+crontab -l | nl
+
+Back up current cron jobs before editing
+
+crontab -l > mycron.backup
+Save your current user cron jobs.
+
+Restore them later
+
+crontab mycron.backup
+
+Delete all your cron jobs
+
+crontab -r
+
+Delete all with confirmation
+
+crontab -i -r
+
+How to remove a single cron job
+
+crontab -e
+Delete the line you no longer want, then save and exit.
+
+Common safe habit
+
+Always use full paths in cron jobs because cron uses a very minimal environment.
+
+Bad example
+
+*/10 * * * * python myscript.py
+
+Better example
+
+*/10 * * * * /usr/bin/python3 /home/kim/myscript.py
+
+Finding full paths
+
+which python3
+which bash
+which flock
+which rsync
+
+Bash script example
+
+Create a script
+
+nano /home/kim/scripts/backup.sh
+
+Example contents
+
+#!/bin/bash
+echo "Backup ran at $(date)" >> /home/kim/logs/backup.log
+
+Make it executable
+
+chmod +x /home/kim/scripts/backup.sh
+
+Run it every 15 minutes
+
+crontab -e
+
+Add
+
+*/15 * * * * /home/kim/scripts/backup.sh
+
+Run it every day at 03:30
+
+30 3 * * * /home/kim/scripts/backup.sh
+
+Remove it later
+
+crontab -e
+Delete the matching line.
+
+Python script example
+
+Create a script
+
+nano /home/kim/scripts/report.py
+
+Example contents
+
+#!/usr/bin/env python3
+from datetime import datetime
+with open("/home/kim/logs/report.log", "a") as f:
+    f.write(f"Python ran at {datetime.now()}\n")
+
+Make sure python3 exists
+
+which python3
+
+Run it every 10 minutes
+
+*/10 * * * * /usr/bin/python3 /home/kim/scripts/report.py
+
+Run it every day at 07:00
+
+0 7 * * * /usr/bin/python3 /home/kim/scripts/report.py
+
+Remove it later
+
+crontab -e
+Delete the matching line.
+
+Using a virtual environment with Python
+
+Cron does not automatically activate your venv.
+
+Use the venv python directly.
+
+Example
+
+*/30 * * * * /home/kim/myproject/venv/bin/python /home/kim/myproject/task.py
+
+Passing output to a log file
+
+*/5 * * * * /usr/bin/python3 /home/kim/scripts/report.py >> /home/kim/logs/report.log 2>&1
+
+This sends normal output and errors into the same log file.
+
+Overwrite instead of append
+
+*/5 * * * * /usr/bin/python3 /home/kim/scripts/report.py > /home/kim/logs/report.log 2>&1
+
+Silence output completely
+
+*/5 * * * * /usr/bin/python3 /home/kim/scripts/report.py > /dev/null 2>&1
+
+Common logging habit
+
+mkdir -p /home/kim/logs
+
+Use flock to stop overlapping jobs
+
+If a job may still be running when the next one starts, use flock.
+
+Example
+
+*/5 * * * * /usr/bin/flock -n /tmp/report.lock /usr/bin/python3 /home/kim/scripts/report.py >> /home/kim/logs/report.log 2>&1
+
+This prevents duplicate overlapping runs.
+
+Environment variables in cron
+
+Cron has a limited PATH.
+You can define one at the top of your crontab.
+
+Example
+
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+Then below that place your jobs.
+
+MAILTO example
+
+MAILTO=""
+Disable mail from cron jobs.
+
+MAILTO="you@example.com"
+Send cron mail if local mail is configured.
+
+Check whether cron is running jobs
+
+sudo systemctl status cron
+Check service status.
+
+grep CRON /var/log/syslog
+See cron activity in syslog.
+
+grep CRON /var/log/syslog | tail -n 50
+See recent cron entries.
+
+journalctl -u cron
+View cron service logs.
+
+journalctl -u cron -n 50
+View recent cron service logs.
+
+Confirm your script itself works
+
+Run the exact command manually in the terminal first.
+
+Example
+
+/usr/bin/python3 /home/kim/scripts/report.py
+
+If it fails manually, cron will also fail.
+
+Useful test job
+
+* * * * * echo "cron test $(date)" >> /home/kim/logs/cron_test.log
+
+Wait a minute, then inspect the file
+
+cat /home/kim/logs/cron_test.log
+
+This is a simple way to verify cron is working.
+
+Use @reboot carefully
+
+@reboot /home/kim/scripts/startup_task.sh
+
+This runs when the machine boots.
+
+If your script needs a desktop session, cron may not be the right tool.
+For GUI or user-session work, systemd user services are often better.
+
+Run a bash one-liner every 30 minutes
+
+*/30 * * * * /bin/bash -c 'date >> /home/kim/logs/dates.log'
+
+Run a Python one-liner every hour
+
+0 * * * * /usr/bin/python3 -c 'from datetime import datetime; open("/home/kim/logs/pyhour.log","a").write(str(datetime.now()) + "\n")'
+
+System-wide cron jobs
+
+sudo nano /etc/crontab
+
+In /etc/crontab there is an extra field for the user to run as.
+
+Example
+
+30 2 * * * root /usr/local/bin/system_task.sh
+
+Files under /etc/cron.d follow a similar format and also include the user field.
+
+The directories /etc/cron.daily, /etc/cron.hourly and so on are for scripts that run on those schedules.
+
+List cron jobs from all common places
+
+crontab -l
+sudo crontab -l
+cat /etc/crontab
+ls -l /etc/cron.d
+ls -l /etc/cron.hourly
+ls -l /etc/cron.daily
+ls -l /etc/cron.weekly
+ls -l /etc/cron.monthly
+
+Smart habits
+
+Use absolute paths.
+Log output when testing.
+Run the command manually first.
+Use flock for jobs that may overlap.
+Keep scripts in a predictable folder such as /home/kim/scripts.
+Keep logs in a predictable folder such as /home/kim/logs.
+Back up crontabs before changing them.
+Use comments in crontab to label jobs.
+
+Example commented crontab section
+
+# backup script every night at 03:30
+30 3 * * * /home/kim/scripts/backup.sh >> /home/kim/logs/backup.log 2>&1
+
+# python report every 10 minutes
+*/10 * * * * /usr/bin/python3 /home/kim/scripts/report.py >> /home/kim/logs/report.log 2>&1
+
+Quick command summary
+
+crontab -e
+Edit user cron jobs.
+
+crontab -l
+List user cron jobs.
+
+crontab -r
+Delete all user cron jobs.
+
+crontab -l > mycron.backup
+Back up cron jobs.
+
+crontab mycron.backup
+Restore cron jobs.
+
+sudo systemctl status cron
+Check cron service status.
+
+grep CRON /var/log/syslog | tail -n 50
+See recent cron activity.
+
+Example recurring bash script
+
+*/15 * * * * /home/kim/scripts/task.sh >> /home/kim/logs/task.log 2>&1
+
+Example recurring python script
+
+*/15 * * * * /usr/bin/python3 /home/kim/scripts/task.py >> /home/kim/logs/task.log 2>&1
+
+Example remove by editing
+
+crontab -e
+Delete the line.
+Save and exit.
+
+End of file.

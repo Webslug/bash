@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Nursery Daemon Toggle
+Comment=Start or stop nursery-daemon
+Exec=pkexec /home/kim/projects/nursery/toggle_daemon.sh
+Icon=system-run
+Terminal=false
+Categories=Utility;System;

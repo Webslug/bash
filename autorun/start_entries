@@ -1,0 +1,37 @@
+mkdir -p /tmp/firefox-kiosk-girls && firefox-esr --no-remote --profile /tmp/firefox-kiosk-girls -kiosk file:///media/kim/TV/dev/firefox/nurseryevalv2/home.html
+
+pkill firefox-esr
+lxqt-sudo featherpad /home/girls/.config/autostart/firefox-home-kiosk.desktop
+
+
+
+[Desktop Entry]
+Type=Application
+Name=Firefox ESR Nursery Home Kiosk
+Exec=sh -c 'mkdir -p /tmp/firefox-kiosk-girls && firefox-esr --no-remote --profile /tmp/firefox-kiosk-girls -kiosk file:///media/kim/TV/dev/firefox/nurseryevalv2/home.html'
+Terminal=false
+OnlyShowIn=LXQt;
+X-LXQt-Autostart-enabled=false
+
+
+[Desktop Entry]
+Type=Application
+Name=Firefox ESR Nursery Home Kiosk
+Exec=sh -c 'mkdir -p /tmp/firefox-kiosk-girls && firefox-esr --no-remote --profile /tmp/firefox-kiosk-girls -kiosk file:///media/kim/TV/dev/firefox/nurseryevalv2/home.html'
+Terminal=false
+OnlyShowIn=LXQt;
+X-LXQt-Autostart-enabled=true
+
+That is an autostart entry, not a desktop shortcut. LXQt reads files like that from ~/.config/autostart/ at login.
+
+If you want Kiddle instead, the same file format applies, just with a different Exec=:
+
+[Desktop Entry]
+Type=Application
+Name=Firefox ESR Kiddle Kiosk
+Exec=sh -c 'mkdir -p /tmp/firefox-kiosk-girls && firefox-esr --no-remote --profile /tmp/firefox-kiosk-girls -kiosk https://www.kiddle.co/'
+Terminal=false
+OnlyShowIn=LXQt;
+X-LXQt-Autostart-enabled=true
+
+

@@ -1,0 +1,3 @@
+pcmanfm-qt --desktop &
+
+pkill -f "pcmanfm-qt --desktop"; sleep 1; pcmanfm-qt --desktop &

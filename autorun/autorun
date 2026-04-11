@@ -1,0 +1,64 @@
+lxqt-sudo featherpad /home/girls/.config/autostart/firefox-home-kiosk.desktop
+
+sudo mkdir -p /home/girls/.config/autostart
+sudo chown -R girls:girls /home/girls/.config
+
+----
+
+
+sudo mkdir -p /home/Kimberly/.local/bin /home/Kimberly/.config/autostart
+
+sudo tee /home/Kimberly/.local/bin/start-nursery-firefox.sh > /dev/null <<'EOF'
+#!/bin/bash
+set -u
+
+# Dev out switch: if this file exists, do not start kiosk
+if [ -f "$HOME/.nursery-no-kiosk" ]; then
+    exit 0
+fi
+
+mkdir -p /tmp/firefox-kiosk-kimberly-kiddle
+exec firefox-esr --no-remote --profile /tmp/firefox-kiosk-kimberly-kiddle -kiosk https://www.kiddle.co/
+EOF
+
+sudo chmod +x /home/Kimberly/.local/bin/start-nursery-firefox.sh
+sudo chown -R Kimberly:Kimberly /home/Kimberly/.local /home/Kimberly/.config
+
+
+--
+
+mkdir -p ~/.local/bin ~/.config/autostart
+
+cat > ~/.local/bin/start-firefox-kiddle-kiosk.sh <<'EOF'
+#!/bin/bash
+set -u
+
+# Dev out switch: if this file exists, skip kiosk launch.
+if [ -f "$HOME/.nursery-no-kiosk" ]; then
+    exit 0
+fi
+
+mkdir -p /tmp/firefox-kiosk-girls
+exec firefox-esr --no-remote --profile /tmp/firefox-kiosk-girls -kiosk https://www.kiddle.co/
+EOF
+
+chmod +x ~/.local/bin/start-firefox-kiddle-kiosk.sh
+
+--
+
+mkdir -p ~/.local/bin ~/.config/autostart
+
+cat > ~/.local/bin/start-firefox-home-kiosk.sh <<'EOF'
+#!/bin/bash
+set -u
+
+# Dev out switch: if this file exists, skip kiosk launch.
+if [ -f "$HOME/.nursery-no-kiosk" ]; then
+    exit 0
+fi
+
+mkdir -p /tmp/firefox-kiosk-girls
+exec firefox-esr --no-remote --profile /tmp/firefox-kiosk-girls -kiosk file:///media/kim/TV/dev/firefox/nurseryevalv2/home.html
+EOF
+
+chmod +x ~/.local/bin/start-firefox-home-kiosk.sh

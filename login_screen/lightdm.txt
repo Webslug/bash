@@ -1,0 +1,12 @@
+sudo apt install lightdm-gtk-greeter-settings
+
+dpkg -l | grep -E 'lightdm|arc-theme'
+sudo apt install lightdm lightdm-gtk-greeter arc-theme
+
+
+Then verify the Arc files exist:
+ls /usr/share/themes | grep -i arc
+
+
+test -d /usr/share/themes/Arc && echo "Arc exists"
+test -d /usr/share/themes/Arc-Darker && echo "Arc-Darker exists"

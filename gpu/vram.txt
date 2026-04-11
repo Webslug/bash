@@ -1,0 +1,4 @@
+nvidia-smi
+
+nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits
+nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk -F', ' '{print $1 " / " $2 " MB used"}'

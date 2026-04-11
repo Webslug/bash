@@ -1,0 +1,18 @@
+# Disable bracketed paste
+set enable-bracketed-paste off
+
+# Smarter Tab Completion
+set completion-ignore-case on
+set show-all-if-ambiguous on
+set colored-stats on
+
+# History Searching (Up/Down Arrows)
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# Word Jumping (Ctrl + Left/Right)
+"\e[1;5D": backward-word
+"\e[1;5C": forward-word
+
+# Ensure Ctrl+K is the "Kill to end" command
+"\C-k": kill-line

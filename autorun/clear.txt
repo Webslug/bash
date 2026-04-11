@@ -1,0 +1,11 @@
+
+sudo featherpad /etc/sddm.conf
+
+# Back it up first
+sudo cp /etc/sddm.conf /etc/sddm.conf.bak
+
+# Remove the autologin section
+sudo sed -i '/^\[Autologin\]/,/^[[:space:]]*$/d' /etc/sddm.conf
+
+# Verify the file is now empty or clean
+cat /etc/sddm.conf

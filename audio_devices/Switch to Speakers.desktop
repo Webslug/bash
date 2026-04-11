@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Switch to Speakers
+Comment=Switch audio back to speakers
+Exec=pactl set-card-profile alsa_card.pci-0000_00_1f.3 output:analog-stereo+input:analog-stereo
+Icon=audio-speakers
+Terminal=false
+Categories=AudioVideo;

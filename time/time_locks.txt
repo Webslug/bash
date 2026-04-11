@@ -1,0 +1,45 @@
+sudo nano /etc/security/time.conf
+```
+
+Add these lines at the **bottom** of the file:
+```
+# Nursery Guardian — allowed login hours
+# Weekdays (Mon-Fri): 06:00–15:00
+login ; * ; !kim & jessica|sarah|patricia|claire ; MoTuWeThFr0600-1500
+# Weekdays (Mon-Fri): 06:00–15:00
+su ; * ; !kim & jessica|sarah|patricia|claire ; MoTuWeThFr0600-1500
+# Weekends (Sat-Sun): 08:00–20:00
+login ; * ; !kim & jessica|sarah|patricia|claire ; SaSu0800-2000
+su ; * ; !kim & jessica|sarah|patricia|claire ; SaSu0800-2000
+Save and exit.
+
+Step 3 — Enable PAM time checking for login
+time.conf only works if PAM is told to use it. Check whether it's already enabled:
+
+
+--
+
+
+sudo nano /etc/security/time.conf
+```
+
+Add at the bottom:
+```
+# Nursery hours — weekdays (Mon-Fri): 06:00-15:00
+login;*;jessica&sarah&patricia&claire&kim;Wk0600-1500
+
+# Nursery hours — weekends (Sat-Sun): 06:00-20:00
+login;*;jessica&sarah&patricia&claire&kim;Wd0600-2000
+
+
+--
+
+# Weekdays: Tech Learning blocks only
+# Block 1: 09:00-10:30 (morning session)
+login ; * ; jessica|sarah|patricia|claire|kim ; MoTuWeThFr0900-1030
+
+# Block 2: 13:00-14:30 (afternoon session)
+login ; * ; jessica|sarah|patricia|claire|kim ; MoTuWeThFr1300-1430
+
+# Weekends: Educational morning block only
+login ; * ; jessica|sarah|patricia|claire|kim ; SaSu0900-1100

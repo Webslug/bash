@@ -1,0 +1,150 @@
+OLLAMA + ANYTHINGLLM REFERENCE
+Lubuntu setup notes - April 2026
+=====================================
+
+START ANYTHINGLLM
+-----------------
+/opt/anythingllm/AnythingLLMDesktop.AppImage
+
+
+
+
+Get version
+ollama --version
+
+
+INSTALL OLLAMA
+--------------
+curl -fsSL https://ollama.com/install.sh | sh
+
+Ollama installs as a systemd service and starts automatically on boot.
+It will detect your NVIDIA GPU automatically.
+
+
+START / STOP OLLAMA
+-------------------
+sudo systemctl start ollama
+sudo systemctl stop ollama
+sudo systemctl restart ollama
+sudo systemctl status ollama
+
+Stop Ollama when not in use to free VRAM.
+
+
+
+
+In AnythingLLM go to Settings > AI Providers > LLM
+Change provider to Ollama
+Set URL to http://localhost:11434
+Your registered models will appear in the list.
+Set one as Active, hit Save Changes, create a new workspace, start chatting.
+
+
+ADD A LOCAL GGUF MODEL TO OLLAMA
+---------------------------------
+Step 1 - create a Modelfile for it (replace the path and name as needed):
+
+cat > /tmp/Modelfile << 'EOF'
+FROM /media/kim/G/AI/models/YOUR-MODEL-NAME.gguf
+TEMPLATE """<|im_start|>system
+{{ .System }}<|im_end|>
+<|im_start|>user
+{{ .Prompt }}<|im_end|>
+<|im_start|>assistant
+"""
+PARAMETER stop "<|im_end|>"
+PARAMETER stop "<|endoftext|>"
+EOF
+
+Step 2 - register it with Ollama (replace your-model-name with whatever you want to call it):
+
+ollama create your-model-name -f /tmp/Modelfile
+
+The TEMPLATE and PARAMETER stop lines above are for Qwen-based models.
+For Llama/Mistral based models you can omit them or use their own chat template.
+
+
+REMOVE A MODEL FROM OLLAMA
+---------------------------
+ollama rm your-model-name
+
+
+LIST ALL MODELS OLLAMA KNOWS ABOUT
+------------------------------------
+ollama list
+
+
+RUN A MODEL DIRECTLY IN TERMINAL (without AnythingLLM)
+-------------------------------------------------------
+ollama run your-model-name
+
+
+PULL AN OFFICIAL MODEL FROM OLLAMA LIBRARY
+-------------------------------------------
+ollama pull llama3.2
+ollama pull mistral
+
+
+PULL A MODEL FROM HUGGINGFACE VIA OLLAMA
+-----------------------------------------
+ollama pull hf.co/username/repository:quantization-tag
+
+Example:
+ollama pull hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:Q4_K_M
+
+Always specify the quantization tag or Ollama will pick one itself.
+
+
+CHECK IF OLLAMA IS RESPONDING
+------------------------------
+curl http://localhost:11434
+
+
+TOGGLE OLLAMA ON/OFF FROM DESKTOP
+-----------------------------------
+Create a script called ollama-toggle.sh on your desktop:
+
+cat > ~/Desktop/ollama-toggle.sh << 'EOF'
+#!/bin/bash
+if systemctl is-active --quiet ollama; then
+    sudo systemctl stop ollama
+    zenity --info --text="Ollama stopped - VRAM freed"
+else
+    sudo systemctl start ollama
+    zenity --info --text="Ollama started"
+fi
+EOF
+
+chmod +x ~/Desktop/ollama-toggle.sh
+
+Double-click it to toggle. Requires zenity (sudo apt install zenity if missing).
+
+
+ANYTHINGLLM CONFIG AND DATA LOCATION
+--------------------------------------
+/home/kim/.config/anythingllm-desktop/
+
+If AnythingLLM is misbehaving, the nuclear option is:
+rm -rf /home/kim/.config/anythingllm-desktop/storage/models/ollama/blobs/
+rm -rf /home/kim/.config/anythingllm-desktop/storage/models/ollama/manifests/
+
+Do not use the built-in AnythingLLM model downloader.
+Always use system Ollama with the provider set to Ollama at http://localhost:11434
+
+
+OLLAMA MODEL STORAGE (default)
+--------------------------------
+/usr/share/ollama/.ollama/models/
+
+Your actual GGUF source files stay wherever they are (e.g. /media/kim/G/AI/models/)
+Ollama creates its own registry entries pointing to them. No copying needed.
+
+
+NOTES
+------
+- Always start Ollama before starting AnythingLLM
+- AnythingLLM provider must be set to Ollama not AnythingLLM (built-in)
+- The built-in AnythingLLM provider corrupts large and custom models on this system
+- Create a new workspace after changing the active model
+- Old workspaces remember their own model setting and will ignore global changes
+- 35 tok/s confirmed working on NVIDIA GPU with Qwen 9B Q6_K

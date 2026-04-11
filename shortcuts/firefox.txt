@@ -1,0 +1,29 @@
+cat > ~/Desktop/firefox-esr-kiddle-kiosk.desktop <<'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Firefox ESR Kiddle Kiosk
+Comment=Launch Firefox ESR in kiosk mode to Kiddle
+Exec=sh -c 'mkdir -p /tmp/firefox-kiosk-test-kiddle && firefox-esr --no-remote --profile /tmp/firefox-kiosk-test-kiddle -kiosk https://www.kiddle.co/'
+Icon=firefox-esr
+Terminal=false
+Categories=Network;WebBrowser;
+StartupNotify=true
+EOF
+chmod +x ~/Desktop/firefox-esr-kiddle-kiosk.desktop
+gio set ~/Desktop/firefox-esr-kiddle-kiosk.desktop metadata::trusted true 2>/dev/null || true
+
+cat > ~/Desktop/firefox-esr-home-kiosk.desktop <<'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Firefox ESR Nursery Home Kiosk
+Comment=Launch Firefox ESR in kiosk mode to local nursery home page
+Exec=sh -c 'mkdir -p /tmp/firefox-kiosk-test-home && firefox-esr --no-remote --profile /tmp/firefox-kiosk-test-home -kiosk file:///media/kim/TV/dev/firefox/nurseryevalv2/home.html'
+Icon=firefox-esr
+Terminal=false
+Categories=Network;WebBrowser;
+StartupNotify=true
+EOF
+chmod +x ~/Desktop/firefox-esr-home-kiosk.desktop
+gio set ~/Desktop/firefox-esr-home-kiosk.desktop metadata::trusted true 2>/dev/null || true

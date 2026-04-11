@@ -1,0 +1,5 @@
+For American English: 
+sudo apt-get install myspell-en-us
+
+For British English: 
+sudo apt-get install hunspell-en-gb

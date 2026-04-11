@@ -1,0 +1,15 @@
+cd /tmp
+wget -O code.deb "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
+sudo apt install ./code.deb
+
+--
+
+sudo apt update
+apt policy code
+code --version
+
+--
+
+Verify was added
+
+ls /etc/apt/sources.list.d/ | grep -i vscode

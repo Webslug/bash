@@ -1,0 +1,13 @@
+cat > /tmp/Modelfile << 'EOF'
+FROM /media/kim/G/AI/models/Qwen3.5-9B-Uncensored-HauhauCS-Aggressive-Q6_K.gguf
+TEMPLATE """<|im_start|>system
+{{ .System }}<|im_end|>
+<|im_start|>user
+{{ .Prompt }}<|im_end|>
+<|im_start|>assistant
+"""
+PARAMETER stop "<|im_end|>"
+PARAMETER stop "<|endoftext|>"
+PARAMETER num_gpu 99
+EOF
+ollama create hauhaucs-qwen -f /tmp/Modelfile

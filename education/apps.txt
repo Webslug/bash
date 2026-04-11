@@ -1,0 +1,26 @@
+sudo apt update
+sudo apt install -y tuxpaint
+sudo apt install -y tuxpaint-stamps
+sudo apt install -y tuxtype
+sudo apt install -y tuxmath
+sudo apt install -y ktuberling
+sudo apt install -y blinken
+sudo apt install -y kanagram
+sudo apt install -y khangman
+sudo apt install -y klettres
+sudo apt install -y ktouch
+sudo apt install -y kwordquiz
+sudo apt install -y parley
+sudo apt install -y kgeography
+sudo apt install -y marble
+sudo apt install -y kalzium
+sudo apt install -y kbruch
+sudo apt install -y kturtle
+sudo apt install -y ri-li
+sudo apt install -y pairs
+
+
+sudo apt remove -y kalzium
+sudo apt autoremove -y
+
+apt list --installed 2>/dev/null | grep kalzium

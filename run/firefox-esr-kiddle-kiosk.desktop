@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Firefox ESR Kiddle Kiosk
+Comment=Launch Firefox ESR in kiosk mode to Kiddle
+Exec=sh -c 'mkdir -p /tmp/firefox-kiosk-test-kiddle && firefox-esr --no-remote --profile /tmp/firefox-kiosk-test-kiddle -kiosk https://www.kiddle.co/'
+Icon=firefox-esr
+Terminal=false
+Categories=Network;WebBrowser;
+StartupNotify=true

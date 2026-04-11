@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Train GGUF Model
+Comment=Activate venv and run make_gguf.py
+Icon=utilities-terminal
+Exec=qterminal -e bash -c 'cd /home/kim/my_ai_project && source venv/bin/activate && python3 make_gguf.py; echo ""; echo "=== FINISHED === Press Enter to close..."; read'
+Path=/home/kim/my_ai_project
+Categories=Development;

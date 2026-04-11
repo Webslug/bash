@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Switch to Headphones
+Comment=Switch audio to optical headphones
+Exec=pactl set-card-profile alsa_card.pci-0000_00_1f.3 output:iec958-stereo+input:analog-stereo
+Icon=audio-headphones
+Terminal=false
+Categories=AudioVideo;
