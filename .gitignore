@@ -1,1 +1,28 @@
 /git/
+/Ollama/AnythingLLM_text_prompt.txt
+
+# env and keys
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.crt
+*.csr
+*.ovpn
+
+# ssh / gpg
+.ssh/
+.gnupg/
+
+# shell history / local junk
+*.log
+*.tmp
+*.swp
+*~
+.cache/
+tmp/
+
+# editor noise
+.vscode/
+.idea/
