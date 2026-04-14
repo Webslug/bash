@@ -1,0 +1,2 @@
+find /etc/firefox -maxdepth 4 \( -name 'policies.json' -o -name 'governor@nursery.local.xpi' \) 2>/dev/null
+find ~/.mozilla/firefox -maxdepth 4 \( -name 'governor@nursery.local.xpi' -o -name 'extensions.json' \) 2>/dev/null

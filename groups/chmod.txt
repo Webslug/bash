@@ -1,0 +1,21 @@
+sudo chgrp -R web /opt/nursery
+sudo chmod -R g+rwX /opt/nursery
+sudo find /opt/nursery -type d -exec chmod g+s {} \; 
+
+sudo find /opt/nursery -path /opt/nursery/cron/nursery_sentinel.sh -prune -o -exec chgrp web {} \;
+sudo find /opt/nursery -path /opt/nursery/cron/nursery_sentinel.sh -prune -o -exec chmod g+rwX {} \;
+sudo find /opt/nursery -type d -exec chmod g+s {} \;
+
+sudo usermod -aG web kim
+
+--
+
+sudo chgrp web /opt/nursery
+
+Set permissions so the group can write:
+Bash
+
+sudo chmod 775 /opt/nursery
+
+sudo chattr -i /etc/cron.d/nursery-sentinel
+sudo rm /etc/cron.d/nursery-sentinel

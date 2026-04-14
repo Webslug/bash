@@ -1,0 +1,35 @@
+That "toggle" trick essentially forced the **plasma-shell** to restart its indexing of the directory. It’s the Linux equivalent of "unplugging it and plugging it back in," and you’re right—it shouldn't be necessary in a stable environment.
+
+The "fragility" you're experiencing usually comes down to **config drift**. When you have multiple Desktop Environments (LXQt and KDE) installed, they sometimes fight over who controls the `user-dirs.dirs` file.
+
+Here is how to "lock it down" so Plasma stops losing your files:
+
+### 1. Hard-Code the Desktop Path
+Plasma might be losing track of where your desktop actually is. Let’s make sure it’s hard-coded correctly.
+* Open the terminal and run: `nano ~/.config/user-dirs.dirs`
+* Look for the line: `XDG_DESKTOP_DIR="$HOME/Desktop"`
+* If it says anything else (like `"$HOME/"` or `"$HOME/Public"`), change it back to `"$HOME/Desktop"`.
+* Save and exit (**Ctrl+O**, **Enter**, **Ctrl+X**).
+
+### 2. Disable "Icon Sorting" Automation
+Sometimes Plasma tries to be "helpful" by grouping or sorting icons in a way that makes them disappear off-screen or into a scrollable area.
+* Right-click Desktop -> **Icons**.
+* Ensure **Sorting** is set to "Manual" or "Name" and **uncheck** "Lock in place" for a moment to see if things rearrange themselves.
+
+### 3. Check for "Invisible" Widgets
+Since Plasma treats the desktop as a canvas, it's possible you accidentally created a **transparent widget** that is sitting *over* your icons, blocking clicks or visibility.
+* Press `Alt+D, Alt+L` to unlock widgets.
+* See if there are any empty rectangular outlines on your screen. If so, delete them.
+
+### 4. The "Nuclear" Prevention (The Plasma Way)
+If you want to keep using Plasma but hate its "smart" features, you can lock the desktop configuration file so it literally *cannot* change itself:
+```bash
+chmod 444 ~/.config/plasma-org.kde.plasma.desktop-appletsrc
+```
+> **Warning:** This makes your desktop settings "Read-Only." You won't be able to change your wallpaper or move icons permanently until you change it back to `644`.
+
+---
+
+**The Bottom Line:** Plasma isn't necessarily "fragile," but it is **complex**. It has about 10x more moving parts than LXQt, and in the world of software, more parts usually means more chances for a gear to slip.
+
+Since you've got your icons back, are you planning to stick it out with Plasma for the features, or is this the final push you needed to head back to the simplicity of LXQt? 
